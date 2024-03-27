@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import ImageViewer from './src/components/ImageViewer';
 import Button from './src/components/Button';
+import CircleButton from './src/components/Button';
+import IconButton from './src/components/Button';
 import * as ImagePicker from 'expo-image-picker';
 
 
@@ -11,6 +13,18 @@ const PlaceholderImage = require('./assets/images/background-image.png');
 export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
+
+  const onReset = () => {
+    setShowAppOptions(false);
+  }
+
+  const onAddSticker = () => {
+    //
+  }
+
+  const onSaveImageAsync = () => {
+    //
+  }
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -29,16 +43,22 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImageViewer 
+        <ImageViewer
           placeholderImageSource={PlaceholderImage}
-          selectedImage={selectedImage} 
+          selectedImage={selectedImage}
         />
       </View>
       {showAppOptions ? (
-        <View/>
+        <View style={styles.optionsContainer}>
+          <View style={styles.optionsRow}>
+            <IconButton icon='refresh' label='Reiniciar' onPress={onReset} />
+            <CircleButton onPress={onAddSticker} />
+            <IconButton icon='save-alt' label='Salvar' onPress={onSaveImageAsync} />
+          </View>
+        </View>
       ) : (
         <View style={styles.footerContainer}>
-          </View>
+        </View>
       )}
       <View style={styles.footerContainer}>
         <Button
@@ -46,9 +66,9 @@ export default function App() {
           theme="primary"
           onPress={pickImageAsync}
         />
-        <Button 
+        <Button
           label="Usar esta Foto"
-          onPress={() => setShowAppOptions(true)} 
+          onPress={() => setShowAppOptions(true)}
         />
       </View>
       <StatusBar style="auto" />
@@ -69,5 +89,13 @@ const styles = StyleSheet.create({
   footerContainer: {
     flex: 1 / 3,
     alignItems: 'center',
+  },
+  optionsContainer: {
+    position: 'absolute',
+    Button: '80',
+  },
+  optionsRow: {
+    alignItems: 'center',
+    flexDirection: 'center',
   }
 });
